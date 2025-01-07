@@ -54,4 +54,4 @@ echo -e "\e[1;32m@.    !b'V*f\`  ][  'V*f\`d!    ,@                        $vga_
 echo -e "\e[1;32m'Ms    VW.     ][     ,Wf    gA\`"
 echo -e "\e[1;32m  VW.   'Ms.   ][   ,gA\`   ,Wf                          $monitor_size_colorized"                  
 echo -e "\e[1;32m   'Ms    'V*mmWWmm*f\`    gA\`" 
-echo -e "\e[1;32m" 
+echo -e "\e[1;0m" 
