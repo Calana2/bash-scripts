@@ -1,5 +1,5 @@
 #!/bin/bash
-# System information command line script
+# System information command line script (like Neofetch)
 
 # Software information
 hostname=$(hostname)

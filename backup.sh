@@ -2,7 +2,7 @@
 # It creates a BACKUP-[DATE].tar.gz file
 
 datetime=$(date +%d-%m-%yT%H-%M-%S)
-name="BACKUP-${datetime}"
+name="BACKUP-${datetime}"                               
 route="/home/$USER/${name}.tar.gz"                        # Change with the route that you want
 
 # Create backup, change with your files/dirs routes

@@ -1,6 +1,10 @@
 #!/bin/bash
-
 # Mini malware scanner
+
+if [ $# -lt 1 ];then 
+  echo "Usage ./miniscan.sh file1 [file2] [file3...]"
+fi
+
 for arg in $@;do
  if [ -e $arg ];then
    if [ -d $arg ];then
