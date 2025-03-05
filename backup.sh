@@ -1,40 +1,36 @@
 #!/bin/bash
-# It creates a BACKUP-[DATE].tar.gz file
+# It creates a BACKUP-[DATE].tar.gz file in $HOME directory
+# It's compatible with cron
 
 datetime=$(date +%d-%m-%yT%H-%M-%S)
-name="BACKUP-${datetime}"                               
-route="/home/$USER/${name}.tar.gz"                        # Change with the route that you want
+name="BACKUP-${datetime}"
+route="$HOME/${name}.tar.gz"                        
+# change with yours
+files="$HOME/Codigo $HOME/Documentos $HOME/Laboratorio $HOME/.vimrc $HOME/.bashrc $HOME/.config/nvim $HOME/bookmarks.html $HOME/.tmux.conf $HOME/.config/sxhkd $HOME/.config/bspwm $HOME/.config/alacritty"
 
 # Create backup, change with your files/dirs routes
-backupfiles=(
-"/home/$USER/Codigo"
-"/home/$USER/Documentos"
-"/home/$USER/Laboratorio"
-"/home/$USER/.vimrc"
-"/home/$USER/.bashrc"
-"/home/$USER/.config/nvim"
-"/home/$USER/bookmarks.html"
-)
-tar czfv "${route}" "${backupfiles[@]}"
+tar czfv "${route}" $files
 if [ $? -ne 0 ];then
  echo "Error creating the backup"
  exit 1
 fi
 
-# Remove the oldest
-salvas=$(find /home/$USER/ -type f -name 'BACKUP*');    
-IFS=$'\n' read -rd '' -a sarray <<< "$salvas"         
-if (( ${#sarray[@]} > 1 )); then        
- size=${#sarray[@]}  
- oldest=''
- for ((i=0; i<size; i++)); do
-  if [ -z "$oldest" ] || [ "${sarray[i]}" -ot "$oldest" ]; then
-   oldest="${sarray[i]}"
-  fi
- done
- rm $oldest   
- if [ $? -ne 0 ];then
-  echo "Error removing ${oldest}"
+# Remove the others
+backups=$(find "$HOME" -maxdepth 1 -name "BACKUP*" -type f)
+
+if [ -z $backups ];then
+  echo "There are not backup files."
   exit 1
- fi
 fi
+
+newest=$(echo "$backups" | xargs ls -t | head -n 1)
+
+for backup in $backups; do
+  if [ "$backup" != "$newest" ];then
+    echo "Deleting $backup"
+    rm "$backup"
+  fi
+done
+
+echo "Done."
+exit 0
